@@ -3,6 +3,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include <memory/vaddr.h>
 
 static int is_batch_mode = false;
 
@@ -46,6 +47,12 @@ static int cmd_info(char * args){
   isa_reg_display();
   return 0;
 }
+static int cmd_x(char * args){
+    //printf("mem[]=%d\n",pmem[0]);
+    word_t temp_info = vaddr_read(0x80000000,4);
+    printf("temp_info=%d\n",temp_info);
+    return 0;
+}
 
 static int cmd_p(char * args){
   return 0;
@@ -63,6 +70,7 @@ static struct {
   { "si", "si cmd", cmd_si },
   { "info", "info cmd", cmd_info },
   { "p", "info p", cmd_p },
+  { "x","x--memory info",cmd_x},
   /* TODO: Add more commands */
 
 };
