@@ -22,11 +22,20 @@ void device_update();
 void fetch_decode(Decode *s, vaddr_t pc);
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
+    int changed = -1;
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) log_write("%s\n", _this->logbuf);
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+  
+  changed = traverse_pool();
+  if(changed==1){
+      nemu_state.state = NEMU_STOP;
+  }
+  else{
+      //continue
+  }
 }
 
 #include <isa-exec.h>
