@@ -56,7 +56,7 @@ WP * new_wp(word_t va,int v){
     temp->old_value = v;
     
     h_free->next=free_->next;
-    temp_head = head;
+    temp_head = h_head;
     while(temp_head->next!=NULL){
         temp_head=temp_head->next;
         count++;
@@ -91,6 +91,8 @@ void free_wp(int n){
     }
     temp->var = 0;
     temp->old_value = 0;
+    //prevent dead loop
+    temp->next=NULL; 
     free_temp->next=temp;
 }
 
